@@ -1,0 +1,11 @@
+package examLog;
+
+public class TestHerit {
+
+	public static void main(String[] args) {
+		Person p = new Person();
+		Person s = new Student();
+		Person t = new Teacher();
+	}
+
+}

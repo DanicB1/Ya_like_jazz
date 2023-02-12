@@ -1,0 +1,9 @@
+package examLog;
+
+public class Teacher extends Person {
+
+	public void Explain() {
+		System.out.println("Explanation begins");
+	}
+	
+}

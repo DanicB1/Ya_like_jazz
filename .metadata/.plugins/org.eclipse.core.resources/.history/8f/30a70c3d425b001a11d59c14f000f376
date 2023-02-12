@@ -1,0 +1,130 @@
+package view;
+
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.JRadioButton;
+
+public class NewFileMenu extends JPanel {
+	private JTextField lFileName;
+
+	/**
+	 * Create the panel.
+	 */
+	public NewFileMenu() {
+		setLayout(null);
+		
+		JLabel labelFileName = new JLabel("File Name : ");
+		labelFileName.setBounds(10, 45, 59, 14);
+		add(labelFileName);
+		
+		lFileName = new JTextField();
+		lFileName.setBounds(79, 42, 280, 20);
+		add(lFileName);
+		lFileName.setColumns(10);
+		
+		JLabel lKey = new JLabel("Key : ");
+		lKey.setBounds(10, 86, 27, 14);
+		add(lKey);
+		
+		JComboBox cbNote = new JComboBox();
+		cbNote.setModel(new DefaultComboBoxModel(new String[] {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"}));
+		cbNote.setMaximumRowCount(12);
+		cbNote.setBounds(47, 82, 42, 22);
+		add(cbNote);
+		
+		JComboBox cbMode = new JComboBox();
+		cbMode.setModel(new DefaultComboBoxModel(new String[] {"Ionian", "Dorian", "Phrygian", "Lydian", "Mixolydian", "Aeolian", "Locrian"}));
+		cbMode.setMaximumRowCount(7);
+		cbMode.setBounds(99, 82, 59, 22);
+		add(cbMode);
+		
+		JLabel lTimeSignature = new JLabel("Time Signature : ");
+		lTimeSignature.setBounds(10, 111, 84, 14);
+		add(lTimeSignature);
+		
+		JSpinner sNumerator = new JSpinner();
+		sNumerator.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		sNumerator.setBounds(99, 108, 42, 20);
+		add(sNumerator);
+		
+		JLabel lSlash = new JLabel("/");
+		lSlash.setBounds(151, 111, 10, 14);
+		add(lSlash);
+		
+		JComboBox cbDenominator = new JComboBox();
+		cbDenominator.setModel(new DefaultComboBoxModel(new String[] {"4", "8"}));
+		cbDenominator.setMaximumRowCount(2);
+		cbDenominator.setBounds(171, 107, 30, 22);
+		add(cbDenominator);
+		
+		JLabel lBPM = new JLabel("Beats Per Minute : ");
+		lBPM.setBounds(10, 136, 92, 14);
+		add(lBPM);
+		
+		JSpinner sBPM = new JSpinner();
+		sBPM.setModel(new SpinnerNumberModel(new Integer(80), new Integer(0), null, new Integer(1)));
+		sBPM.setBounds(109, 133, 42, 20);
+		add(sBPM);
+		
+		JLabel lFoundationType = new JLabel("Foundation Type : ");
+		lFoundationType.setBounds(10, 183, 92, 14);
+		add(lFoundationType);
+		
+		JRadioButton rbRiff = new JRadioButton("Riff");
+		rbRiff.setBounds(109, 179, 43, 23);
+		add(rbRiff);
+		
+		JRadioButton rbChordProgression = new JRadioButton("Chord Progression");
+		rbChordProgression.setBounds(171, 179, 115, 23);
+		add(rbChordProgression);
+		
+		JRadioButton rdPedalPoint = new JRadioButton("Pedal-Point");
+		rdPedalPoint.setBounds(288, 179, 84, 23);
+		add(rdPedalPoint);
+		
+		JLabel lPatternLength = new JLabel("Pattern Length : ");
+		lPatternLength.setBounds(10, 208, 84, 14);
+		add(lPatternLength);
+		
+		JSpinner sPatternLength = new JSpinner();
+		sPatternLength.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+		sPatternLength.setBounds(99, 205, 42, 20);
+		add(sPatternLength);
+		
+		JLabel lGrooveStyle = new JLabel("Groove Style : ");
+		lGrooveStyle.setBounds(10, 233, 71, 14);
+		add(lGrooveStyle);
+		
+		JComboBox cbGrooveStyle = new JComboBox();
+		cbGrooveStyle.setModel(new DefaultComboBoxModel(new String[] {"Straight"}));
+		cbGrooveStyle.setMaximumRowCount(4);
+		cbGrooveStyle.setBounds(89, 229, 84, 22);
+		add(cbGrooveStyle);
+		
+		JLabel lTime = new JLabel("Time : ");
+		lTime.setBounds(10, 258, 34, 14);
+		add(lTime);
+		
+		JComboBox cbTime = new JComboBox();
+		cbTime.setModel(new DefaultComboBoxModel(new String[] {"Common-Time", "Half-Time", "Double-Time"}));
+		cbTime.setMaximumRowCount(3);
+		cbTime.setBounds(47, 254, 111, 22);
+		add(cbTime);
+		
+		JLabel lIntensity = new JLabel("Intensity : ");
+		lIntensity.setBounds(10, 283, 53, 14);
+		add(lIntensity);
+		
+		JComboBox cbIntensity = new JComboBox();
+		cbIntensity.setModel(new DefaultComboBoxModel(new String[] {"Smooth"}));
+		cbIntensity.setMaximumRowCount(3);
+		cbIntensity.setBounds(66, 279, 75, 22);
+		add(cbIntensity);
+
+	}
+}

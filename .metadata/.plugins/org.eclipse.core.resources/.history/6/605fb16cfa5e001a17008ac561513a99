@@ -1,0 +1,44 @@
+package model;
+
+public class Key {
+	Modes mode;
+	String _root;
+	char[] _degreeQuality = { 'M', 'm', 'm', 'M', 'D', 'm', 'd' };
+	Scales _scales;
+
+	public Key(Modes modeName, String rootName) {
+		int mode;
+		char[] steps = {'W','W','H','W','W','W','H'};
+		
+		_root=rootName;
+		_degreeQuality = shiftToMode(mode, _degreeQuality);
+		_scales = new Scales(mode,_root, _degreeQuality, steps);
+	}
+
+	public char[] getDegreeQuality() {
+		return _degreeQuality;
+	}
+
+	public Scales getScales() {
+		return _scales;
+	}
+
+	private char[] shiftToMode(int mode, char[] array) {
+		if (mode != 0) {
+			char[] degreeTemp = array;
+			int index;
+			
+			for (int i = 0; i < _degreeQuality.length; ++i) {
+				index = i+mode;
+				
+				if (index>=array.length) {
+					index-=array.length;
+				}
+				
+				array[i]=degreeTemp[index];
+			}
+		}
+		
+		return array;
+	}
+}

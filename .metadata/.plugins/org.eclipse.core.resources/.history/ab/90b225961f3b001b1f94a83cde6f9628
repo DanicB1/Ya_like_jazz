@@ -1,0 +1,8 @@
+package examLog;
+
+public class Student extends Person {
+
+	public void goToClass() {
+		
+	}
+}

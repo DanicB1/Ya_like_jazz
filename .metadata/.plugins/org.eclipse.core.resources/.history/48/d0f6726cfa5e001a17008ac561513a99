@@ -1,0 +1,66 @@
+package model;
+
+public abstract class NoteNames {
+	enum NoteName {
+		C("C"){
+			@Override
+			protected int noteValue() { return 60; }
+		},
+		C_SHARP("C#"){
+			@Override
+			protected int noteValue() { return 61; }
+		},
+		D("D") {
+			@Override
+			protected int noteValue() { return 61; }
+		},
+		D_SHARP("D#") {
+			@Override
+			protected int noteValue() { return 61; }
+		},
+		E("E") {
+			@Override
+			protected int noteValue() { return 61; }
+		},
+		F("F") {
+			@Override
+			protected int noteValue() { return 61; }
+		},
+		F_SHARP("F#") {
+			@Override
+			protected int noteValue() { return 61; }
+		},
+		G("G") {
+			@Override
+			protected int noteValue() { return 61; }
+		},
+		G_SHARP("G#") {
+			@Override
+			protected int noteValue() { return 61; }
+		},
+		A("A") {
+			@Override
+			protected int noteValue() { return 61; }
+		},
+		A_SHARP("A#") {
+			@Override
+			protected int noteValue() { return 61; }
+		},
+		B("B") {
+			@Override
+			protected int noteValue() { return 61; }
+		};
+		
+		private final String noteName;
+		private NoteName(String noteName) {
+			this.noteName=noteName;
+		}
+		
+		public String getNoteName() {
+			return noteName;
+		}
+		
+		protected abstract int noteValue();
+	}
+	
+}

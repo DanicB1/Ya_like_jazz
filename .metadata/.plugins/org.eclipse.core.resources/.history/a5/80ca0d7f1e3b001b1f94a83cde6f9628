@@ -1,0 +1,9 @@
+package examLog;
+
+public class Rectangle {
+	private double a, b;
+	
+	public void surface() {
+		
+	}
+}

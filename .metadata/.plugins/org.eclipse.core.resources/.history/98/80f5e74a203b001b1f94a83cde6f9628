@@ -1,0 +1,15 @@
+package examLog;
+
+public class Person {
+
+	private int age;
+	
+	public void setAge(int n) {
+		this.age = n;
+	}
+	
+	protected void Hello() {
+		System.out.println("Hello");
+	}
+	
+}

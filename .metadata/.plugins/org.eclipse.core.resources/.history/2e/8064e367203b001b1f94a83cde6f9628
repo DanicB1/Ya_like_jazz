@@ -1,0 +1,19 @@
+package examLog;
+
+public class Person {
+
+	private int age;
+	
+	protected void setAge(int n) {
+		this.age = n;
+	}
+	
+	private int getAge() {
+		return age;
+	}
+	
+	protected void Hello() {
+		System.out.println("Hello");
+	}
+	
+}

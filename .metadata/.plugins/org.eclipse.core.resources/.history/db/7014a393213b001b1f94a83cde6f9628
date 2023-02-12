@@ -1,0 +1,10 @@
+package examLog;
+
+public class Chat implements AnimalAction {
+
+	@Override
+	public void shout() {
+		System.out.println("Miaou");
+	}
+
+}

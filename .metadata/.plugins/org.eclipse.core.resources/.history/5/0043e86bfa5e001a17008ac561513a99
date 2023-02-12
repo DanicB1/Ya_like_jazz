@@ -1,0 +1,11 @@
+package model;
+
+public enum Modes {
+	IONIAN, 
+	DORIAN, 
+	PHRYGIAN, 
+	LYDIAN, 
+	MIXOLYDIAN, 
+	AEOLIAN, 
+	LOCRIAN
+}

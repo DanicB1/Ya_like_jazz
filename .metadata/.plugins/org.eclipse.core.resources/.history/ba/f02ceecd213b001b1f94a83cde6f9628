@@ -1,0 +1,9 @@
+package examLog;
+
+public class TestPoly {
+
+	public static void main(String[] args) {
+		AnimalAction[] animals = new AnimalAction[5];
+	}
+
+}

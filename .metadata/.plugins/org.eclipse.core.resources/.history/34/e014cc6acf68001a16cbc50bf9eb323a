@@ -1,0 +1,481 @@
+package view;
+
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Enumeration;
+import java.util.Vector;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.JRadioButton;
+import javax.swing.JCheckBox;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+
+import controller.Controller;
+import model.Accompaniment;
+import model.Bass;
+import model.ChordProgression;
+import model.Drum;
+import model.Foundation;
+import model.Mode.Modes;
+import model.Note.MelodicNotes;
+import model.Riff;
+
+import javax.swing.JButton;
+
+@SuppressWarnings({"serial","rawtypes"})
+public class NewFileMenu extends JFrame implements Menu {
+	final int _menu = 1;
+	
+	private String _fileName;
+	private MelodicNotes _key;
+	private Modes _mode;
+	private int _numerator;
+	private int _denominator;
+	private int _bpm;
+	private String _foundation;
+	private String[] _trackRoles;
+	private String[] _trackNames;
+	private int _patternLength;
+	private double[] _markov;
+	private String _time;
+	private int _nbFiles;
+	
+	private JTextField tfFileName;
+	private JComboBox cbNote;
+	private JComboBox cbMode;
+	private JSpinner sNumerator;
+	private JComboBox cbDenominator;
+	private JSpinner sBPM;
+	private JRadioButton rbRiff;
+	private JRadioButton rbChordProgression;
+	private ButtonGroup foundationGroup;
+	private JSpinner sPatternLength;
+	private Vector<JSpinner> markovDegrees;
+	private JComboBox cbTime;
+	private JCheckBox cbMelody;
+	private JTable tTracks;
+	private DefaultTableModel model;
+	private int baseNbRows;
+	private JComboBox cbtrackRoles;
+	
+	private Listener listener;
+	
+	private JButton bGenerate;
+	private JButton bBack;
+	private JSpinner sNbTracks;
+	private JSpinner sNbFiles;
+
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	public NewFileMenu() {
+		getContentPane().setLayout(null);
+		setBounds(0, 0, 460, 660);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(0, 0, 446, 618);
+		getContentPane().add(panel);
+		panel.setLayout(null);
+		
+		JSpinner sFirstDegree = new JSpinner();
+		sFirstDegree.setBounds(94, 198, 42, 20);
+		panel.add(sFirstDegree);
+		sFirstDegree.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+		
+		JSpinner sSecondDegree = new JSpinner();
+		sSecondDegree.setBounds(380, 329, 42, 20);
+		panel.add(sSecondDegree);
+		sSecondDegree.setModel(new SpinnerNumberModel(new Integer(1), new Integer(0), null, new Integer(1)));
+		
+		JSpinner sThirdDegree = new JSpinner();
+		sThirdDegree.setBounds(132, 329, 42, 20);
+		panel.add(sThirdDegree);
+		sThirdDegree.setModel(new SpinnerNumberModel(new Integer(1), new Integer(0), null, new Integer(1)));
+		
+		JSpinner sFourthDegree = new JSpinner();
+		sFourthDegree.setBounds(178, 329, 42, 20);
+		panel.add(sFourthDegree);
+		sFourthDegree.setModel(new SpinnerNumberModel(new Integer(1), new Integer(0), null, new Integer(1)));
+		
+		JSpinner sFifthDegree = new JSpinner();
+		sFifthDegree.setBounds(226, 329, 42, 20);
+		panel.add(sFifthDegree);
+		sFifthDegree.setModel(new SpinnerNumberModel(new Integer(1), new Integer(0), null, new Integer(1)));
+		
+		JSpinner sSixthDegree = new JSpinner();
+		sSixthDegree.setBounds(84, 329, 42, 20);
+		panel.add(sSixthDegree);
+		sSixthDegree.setModel(new SpinnerNumberModel(new Integer(1), new Integer(0), null, new Integer(1)));
+		
+		JSpinner sSeventhDegree = new JSpinner();
+		sSeventhDegree.setBounds(276, 329, 42, 20);
+		panel.add(sSeventhDegree);
+		sSeventhDegree.setModel(new SpinnerNumberModel(new Integer(1), new Integer(0), null, new Integer(1)));
+		
+		markovDegrees = new Vector<JSpinner>(7);
+		for (Component c: panel.getComponents()) {
+			if (c.getClass()==JSpinner.class) {
+				markovDegrees.add((JSpinner) c);
+			}
+		}
+	
+		sNbTracks = new JSpinner();
+		sNbTracks.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		sNbTracks.setBounds(162, 409, 42, 20);
+		panel.add(sNbTracks);
+		
+		JLabel lFirstDegree = new JLabel("I");
+		lFirstDegree.setBounds(94, 354, 10, 14);
+		panel.add(lFirstDegree);
+		
+		JLabel lSecondDegree = new JLabel("II");
+		lSecondDegree.setBounds(148, 354, 10, 14);
+		panel.add(lSecondDegree);
+		
+		JLabel lThirdDegree = new JLabel("III");
+		lThirdDegree.setBounds(192, 354, 12, 14);
+		panel.add(lThirdDegree);
+		
+		JLabel lFourthDegree = new JLabel("IV");
+		lFourthDegree.setBounds(236, 354, 12, 14);
+		panel.add(lFourthDegree);
+		
+		JLabel lFifthDegree = new JLabel("V");
+		lFifthDegree.setBounds(286, 354, 12, 14);
+		panel.add(lFifthDegree);
+		
+		JLabel lSixthDegree = new JLabel("VI");
+		lSixthDegree.setBounds(338, 354, 12, 14);
+		panel.add(lSixthDegree);
+		
+		JLabel lSeventhDegree = new JLabel("VII");
+		lSeventhDegree.setBounds(390, 354, 14, 14);
+		panel.add(lSeventhDegree);
+		
+		JLabel lMelody = new JLabel("Melody : ");
+		lMelody.setBounds(10, 386, 46, 14);
+		panel.add(lMelody);
+		
+		cbMelody = new JCheckBox("");
+		cbMelody.setBounds(56, 382, 28, 23);
+		panel.add(cbMelody);
+		
+		JLabel lNbTracks = new JLabel("Number of additionnal tracks : ");
+		lNbTracks.setBounds(10, 412, 148, 14);
+		panel.add(lNbTracks);
+		
+		JLabel lMarkov = new JLabel("Probabilities : ");
+		lMarkov.setBounds(13, 332, 71, 14);
+		panel.add(lMarkov);
+		
+		JLabel lBPM = new JLabel("Beats Per Minute : ");
+		lBPM.setBounds(12, 134, 92, 14);
+		panel.add(lBPM);
+		
+		sBPM = new JSpinner();
+		sBPM.setBounds(116, 131, 42, 20);
+		panel.add(sBPM);
+		sBPM.setModel(new SpinnerNumberModel(new Integer(80), new Integer(33), null, new Integer(1)));
+		
+		JLabel lFoundationType = new JLabel("Foundation Type : ");
+		lFoundationType.setBounds(10, 176, 92, 14);
+		panel.add(lFoundationType);
+		
+		rbRiff = new JRadioButton(Riff.class.getSimpleName());
+		rbRiff.setBounds(226, 172, 43, 23);
+		panel.add(rbRiff);
+		
+		rbChordProgression = new JRadioButton(ChordProgression.class.getSimpleName());
+		rbChordProgression.setBounds(107, 172, 115, 23);
+		panel.add(rbChordProgression);
+		
+		rbChordProgression.setSelected(true);
+		
+		foundationGroup = new ButtonGroup();
+		foundationGroup.add(rbRiff);
+		foundationGroup.add(rbChordProgression);
+		
+		JLabel lPatternLength = new JLabel("Pattern Length : ");
+		lPatternLength.setBounds(10, 201, 84, 14);
+		panel.add(lPatternLength);
+		
+		sPatternLength = new JSpinner();
+		sPatternLength.setBounds(328, 329, 42, 20);
+		panel.add(sPatternLength);
+		sPatternLength.setModel(new SpinnerNumberModel(new Integer(1), new Integer(0), null, new Integer(1)));
+		
+		JLabel lGrooveStyle = new JLabel("Groove Style : ");
+		lGrooveStyle.setBounds(10, 226, 79, 14);
+		panel.add(lGrooveStyle);
+		
+		JComboBox cbGrooveStyle = new JComboBox();
+		cbGrooveStyle.setBounds(90, 222, 84, 22);
+		panel.add(cbGrooveStyle);
+		cbGrooveStyle.setModel(new DefaultComboBoxModel(new String[] {"Straight"}));
+		cbGrooveStyle.setMaximumRowCount(4);
+		
+		JLabel lTime = new JLabel("Time : ");
+		lTime.setBounds(10, 251, 34, 14);
+		panel.add(lTime);
+		
+		cbTime = new JComboBox();
+		cbTime.setBounds(47, 247, 111, 22);
+		panel.add(cbTime);
+		cbTime.setModel(new DefaultComboBoxModel(new String[] {"Straight Time", "Semi-Straight Time", "Semi-Broken Time", "Broken Time"}));
+		cbTime.setMaximumRowCount(3);
+		
+		JLabel lIntensity = new JLabel("Intensity : ");
+		lIntensity.setBounds(10, 276, 53, 14);
+		panel.add(lIntensity);
+		
+		JComboBox cbIntensity = new JComboBox();
+		cbIntensity.setBounds(78, 272, 75, 22);
+		panel.add(cbIntensity);
+		cbIntensity.setModel(new DefaultComboBoxModel(new String[] {"Smooth"}));
+		cbIntensity.setMaximumRowCount(3);
+		
+		JLabel labelFileName = new JLabel("File Name : ");
+		labelFileName.setBounds(10, 43, 59, 14);
+		panel.add(labelFileName);
+		
+		tfFileName = new JTextField();
+		tfFileName.setBounds(76, 40, 280, 20);
+		panel.add(tfFileName);
+		tfFileName.setColumns(10);
+		
+		JLabel lKey = new JLabel("Key : ");
+		lKey.setBounds(10, 84, 28, 14);
+		panel.add(lKey);
+		
+		cbNote = new JComboBox();
+		cbNote.setBounds(42, 80, 42, 22);
+		panel.add(cbNote);
+		cbNote.setModel(new DefaultComboBoxModel(new String[] {MelodicNotes.C.getNoteNameValue(),
+															   MelodicNotes.C_SHARP.getNoteNameValue(),
+															   MelodicNotes.D.getNoteNameValue(),
+															   MelodicNotes.D_SHARP.getNoteNameValue(),
+															   MelodicNotes.E.getNoteNameValue(),
+															   MelodicNotes.F.getNoteNameValue(),
+															   MelodicNotes.F_SHARP.getNoteNameValue(),
+															   MelodicNotes.G.getNoteNameValue(),
+															   MelodicNotes.G_SHARP.getNoteNameValue(),
+															   MelodicNotes.A.getNoteNameValue(),
+															   MelodicNotes.A_SHARP.getNoteNameValue(),
+															   MelodicNotes.B.getNoteNameValue()}));
+		cbNote.setMaximumRowCount(12);
+		
+		cbMode = new JComboBox();
+		cbMode.setBounds(94, 80, 59, 22);
+		panel.add(cbMode);
+		cbMode.setModel(new DefaultComboBoxModel(new String[] {Modes.IONIAN.getModeName(),
+															   Modes.DORIAN.getModeName(),
+															   Modes.PHRYGIAN.getModeName(),
+															   Modes.LYDIAN.getModeName(),
+															   Modes.MIXOLYDIAN.getModeName(),
+															   Modes.AEOLIAN.getModeName(),
+															   Modes.LOCRIAN.getModeName()}));
+		cbMode.setMaximumRowCount(7);
+		
+		JLabel lTimeSignature = new JLabel("Time Signature : ");
+		lTimeSignature.setBounds(10, 109, 84, 14);
+		panel.add(lTimeSignature);
+		
+		sNumerator = new JSpinner();
+		sNumerator.setBounds(94, 106, 42, 20);
+		panel.add(sNumerator);
+		sNumerator.setModel(new SpinnerNumberModel(new Integer(4), new Integer(1), null, new Integer(1)));
+		
+		JLabel lSlash = new JLabel("/");
+		lSlash.setBounds(146, 109, 10, 14);
+		panel.add(lSlash);
+		
+		cbDenominator = new JComboBox();
+		cbDenominator.setBounds(162, 105, 42, 22);
+		panel.add(cbDenominator);
+		cbDenominator.setModel(new DefaultComboBoxModel(new String[] {"4", "8"}));
+		cbDenominator.setMaximumRowCount(2);
+		
+		JScrollPane spTracks = new JScrollPane();
+		spTracks.setBounds(10, 440, 274, 167);
+		panel.add(spTracks);
+		
+		model = new DefaultTableModel();
+		//https://stackoverflow.com/questions/46047446/jtable-set-specific-cells-not-editable
+		tTracks = new JTable(model) {
+			public boolean isCellEditable(int row, int column) {		
+				if (row < baseNbRows || column==1) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+		};
+		spTracks.setViewportView(tTracks);
+		model.addColumn("Track Name");
+		model.addColumn("Track Role");
+		model.addColumn("# track");
+		model.addRow(new Object[] {Foundation.class.getSimpleName(),model.getRowCount()+1});
+		model.addRow(new Object[] {Bass.class.getSimpleName(),model.getRowCount()+1});
+		model.addRow(new Object[] {Drum.class.getSimpleName(),model.getRowCount()+1});
+		tTracks.setRowHeight(25);
+		TableColumnModel columnWidth = tTracks.getColumnModel();
+		columnWidth.getColumn(0).setPreferredWidth(150);
+		columnWidth.getColumn(1).setPreferredWidth(150);
+		columnWidth.getColumn(2).setPreferredWidth(1);
+		baseNbRows = model.getRowCount();
+		
+		// https://docs.oracle.com/javase/tutorial/uiswing/components/table.html#combobox
+		cbtrackRoles = new JComboBox();
+		cbtrackRoles.setModel(new DefaultComboBoxModel(new String[] {Accompaniment.class.getSimpleName(),
+																   Foundation.class.getSimpleName()}));
+		TableColumn roleColumn = tTracks.getColumnModel().getColumn(0);
+		roleColumn.setCellEditor(new DefaultCellEditor(cbtrackRoles));
+		
+		bGenerate = new JButton("Generate");
+		bGenerate.setBounds(294, 494, 142, 75);
+		panel.add(bGenerate);
+		
+		bBack = new JButton("Back");
+		bBack.setBounds(347, 580, 89, 23);
+		panel.add(bBack);
+		
+		JLabel lNbFiles = new JLabel("Number of file : ");
+		lNbFiles.setBounds(296, 469, 84, 14);
+		panel.add(lNbFiles);
+		
+		sNbFiles = new JSpinner();
+		sNbFiles.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+		sNbFiles.setBounds(380, 466, 42, 20);
+		panel.add(sNbFiles);
+		
+		listener = new Listener();
+		bBack.addActionListener(listener);
+		cbMelody.addActionListener(listener);
+		sNbTracks.addChangeListener(listener);
+		bGenerate.addActionListener(listener);
+	}
+	
+	public class Listener implements ActionListener, ChangeListener {
+		@Override
+		public void actionPerformed(ActionEvent evt) {
+			if (evt.getSource()==bBack) {
+				MainMenu window = (MainMenu) Menu.getMenu(0);
+				window.setVisible(true);
+				setVisible(false);
+			} else if (evt.getSource()==bGenerate) {
+				setProprieties();
+				Controller.generateMidiFile(_fileName,
+											_key,
+											_mode,
+											_numerator,
+											_denominator,
+											_bpm,
+											_foundation,
+											_trackRoles, 
+											_patternLength,
+											_markov,
+											_time,
+											_nbFiles);
+			} else if (evt.getSource()==cbMelody) {
+				if (cbMelody.isSelected()) {
+					baseNbRows=4;
+					model.insertRow(baseNbRows-1, new Object [] {"Melody",4});
+				} else {
+					baseNbRows=3;
+					model.removeRow(baseNbRows);
+				}
+				setRowNumber(baseNbRows);
+			}
+		}
+
+		@Override
+		public void stateChanged(ChangeEvent evt) {
+			if (evt.getSource()==sNbTracks) {
+				int nbTracks = (int) sNbTracks.getValue();
+				int i=1;
+				if (model.getRowCount() < baseNbRows+nbTracks) {
+					while (model.getRowCount() != baseNbRows+nbTracks) {
+						model.addRow(new Object [] {"Click to choose a role", model.getRowCount()+i});
+					}
+				} else {
+					model.setRowCount(baseNbRows+nbTracks);
+				}
+			}
+		}
+		
+		private void setRowNumber(int baseNbRows) {
+			tTracks.isCellEditable(baseNbRows, 1);
+			if (model.getRowCount()>baseNbRows) {
+				for (int i=baseNbRows;i < model.getRowCount(); ++i) {
+					model.setValueAt(i+1, i, 1);
+				}
+			}
+		}
+		
+		private void setProprieties() {
+			_fileName = tfFileName.getText();
+			_key = MelodicNotes.getMelodicNote(String.valueOf(cbNote.getSelectedItem()));
+			_mode = Modes.getMode(String.valueOf(cbMode.getSelectedItem()));
+			_numerator = (Integer) sNumerator.getValue();
+			_denominator = Integer.valueOf(String.valueOf(cbDenominator.getSelectedItem()));
+			_bpm = (Integer) sBPM.getValue();
+			_foundation = getFoundationType();
+			_trackRoles = getTrackRoles();
+			_patternLength = (Integer) sPatternLength.getValue();
+			_markov = setMarkov();
+			_time = String.valueOf(cbTime.getSelectedItem());
+			_nbFiles = (Integer) sNbFiles.getValue();
+		}
+		
+		private String getFoundationType() {
+			AbstractButton b;
+			Enumeration<AbstractButton> e = foundationGroup.getElements();
+			
+			//https://stackoverflow.com/questions/7160568/iterating-through-enumeration-of-hastable-keys-throws-nosuchelementexception-err
+			while (e.hasMoreElements()) {
+				b = e.nextElement();
+				if (b.isSelected()) {
+					return b.getText();
+				}
+			}
+			
+			return null;
+		}
+		
+		private String[] getTrackRoles() {
+			String[] trackRoles = new String[model.getRowCount()];
+					
+			for (int i = 0; i<trackRoles.length; ++i) {
+				trackRoles[i] = (String) model.getValueAt(i, 0);
+			}
+			
+			return trackRoles;
+		}
+		
+		private double[] setMarkov() {
+			double[] markov = new double[7];
+			
+			for (int i=0; i<markovDegrees.size(); ++i) {
+				markov[i] = (Integer) markovDegrees.get(i).getValue();
+			}
+			
+			return markov;
+		}
+	}
+}

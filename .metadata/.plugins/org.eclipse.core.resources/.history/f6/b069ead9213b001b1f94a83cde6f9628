@@ -1,0 +1,10 @@
+package examLog;
+
+public class Cat implements AnimalAction {
+
+	@Override
+	public void shout() {
+		System.out.println("Miaou");
+	}
+
+}

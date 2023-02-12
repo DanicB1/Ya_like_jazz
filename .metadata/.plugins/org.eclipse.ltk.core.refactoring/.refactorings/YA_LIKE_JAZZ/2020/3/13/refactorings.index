@@ -1,0 +1,9 @@
+1584962776951	Rename method 'convertInstrumentsToLines'
+1584975587110	Delete element
+1585079134822	Rename field '_intervals'
+1585080549306	Rename field '_modifiedDegrees'
+1585081345429	Rename field '_chordQuality'
+1585081402845	Rename local variable 'chordQuality'
+1585082600462	Rename local variable 'key'
+1585320582281	Rename method 'basicJazzProgression'
+1585327785876	Rename enum constant 'WHOTE_NOTE'

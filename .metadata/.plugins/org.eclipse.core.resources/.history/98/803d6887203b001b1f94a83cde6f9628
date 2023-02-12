@@ -1,0 +1,12 @@
+package examLog;
+
+public class TestHerit {
+
+	public static void main(String[] args) {
+		new Person().Hello();
+		Person s = new Student();
+		Person t = new Teacher();
+		
+	}
+
+}

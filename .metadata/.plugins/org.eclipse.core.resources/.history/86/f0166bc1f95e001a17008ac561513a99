@@ -1,0 +1,74 @@
+package model;
+
+public class Key {
+	int _modeSound;
+	String _root;
+	char[] _degreeQuality = { 'M', 'm', 'm', 'M', 'D', 'm', 'd' };
+	Scales _scales;
+
+	public Key(Mode modeName, String rootName) {
+		int mode;
+		char[] steps = {'W','W','H','W','W','W','H'};
+		
+		_root=rootName;
+		mode = prepareMode(modeName);
+		_degreeQuality = shiftToMode(mode, _degreeQuality);
+		_scales = new Scales(mode,_root, _degreeQuality, steps);
+	}
+
+	public char[] getDegreeQuality() {
+		return _degreeQuality;
+	}
+
+	public Scales getScales() {
+		return _scales;
+	}
+
+	private int prepareMode(Mode modeName) {
+		int mode = 0;
+
+		if (modeName == Mode.IONIAN) {
+			mode = 0;
+			_modeSound = 0;
+		} else if (modeName == Mode.DORIAN) {
+			mode = 1;
+			_modeSound = 5;
+		} else if (modeName == Mode.PHRYGIAN) {
+			mode = 2;
+			_modeSound = 1;
+		} else if (modeName == "Lydian") {
+			mode = 3;
+			_modeSound = 3;
+		} else if (modeName == "Mixolydian") {
+			mode = 4;
+			_modeSound = 6;
+		} else if (modeName == "Aeolian") {
+			mode = 5;
+			_modeSound = 2;
+		} else if (modeName == "Locrian") {
+			mode = 6;
+			_modeSound = 4;
+		}
+
+		return mode;
+	}
+
+	private char[] shiftToMode(int mode, char[] array) {
+		if (mode != 0) {
+			char[] degreeTemp = array;
+			int index;
+			
+			for (int i = 0; i < _degreeQuality.length; ++i) {
+				index = i+mode;
+				
+				if (index>=array.length) {
+					index-=array.length;
+				}
+				
+				array[i]=degreeTemp[index];
+			}
+		}
+		
+		return array;
+	}
+}
